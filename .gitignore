@@ -1,0 +1,22 @@
+# Node / frontend
+node_modules/
+dist/
+dist-electron/
+electron-builder/
+out/
+.vite/
+.env
+
+# Electron
+release/
+build/
+
+# Python / backend
+backend/firstvenv/
+__pycache__/
+*.pyc
+
+# OS / editor junk
+.DS_Store
+.idea/
+.vscode/
