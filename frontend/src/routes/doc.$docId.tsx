@@ -1,9 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/doc/$docId')({
-  component: RouteComponent,
-})
+export const Route = createFileRoute("/doc/$docId")({
+  component: SpecificDocument,
+});
 
-function RouteComponent() {
-  return <div>Hello "/doc/$docId"!</div>
+function SpecificDocument() {
+  return <div>Hello "/doc/$docId"!</div>;
 }
