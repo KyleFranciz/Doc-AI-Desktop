@@ -1,11 +1,13 @@
 import * as React from "react";
 
-import { ArrowUpIcon } from "./chadcn/arrow-up";
+import { ArrowUpIcon } from "./shadcn/arrow-up";
 import { cn } from "../../lib/utils";
-import { AttachFileIcon } from "./chadcn/attach-file";
-import { MicIcon } from "./chadcn/mic";
+import { AttachFileIcon } from "./shadcn/attach-file";
+import { MicIcon } from "./shadcn/mic";
 
 export interface PromptInputProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+
+// TODO: ADD IN SHADCN TOOLTIP
 
 const PromptInput = React.forwardRef<HTMLTextAreaElement, PromptInputProps>(
   ({ className, onInput, ...props }, ref) => {
@@ -27,11 +29,11 @@ const PromptInput = React.forwardRef<HTMLTextAreaElement, PromptInputProps>(
     // onClick function to send the data to the backend with a mutation
 
     return (
-      <div className="relative w-full max-w-189.5">
+      <div className="relative w-full max-w-180.5 md:max-w-180 sm:max-w-150 xs:max-w-100">
         <textarea
           ref={textareaRef}
           className={cn(
-            "min-h-36 w-full resize-none overflow-hidden rounded-3xl border border-[#474747] bg-background px-4 py-4 pb-20 text-base text-foreground placeholder:text-foreground placeholder:opacity-70 hover:border-[#666666] focus-visible:outline-none ",
+            "min-h-36 w-full resize-none overflow-hidden rounded-3xl border border-[#474747] bg-[#202020] px-4 py-4 pb-20 text-base text-foreground placeholder:text-foreground placeholder:opacity-70 hover:border-[#666666] focus-visible:outline-none ",
             className,
           )}
           onInput={handleInput}
@@ -41,14 +43,25 @@ const PromptInput = React.forwardRef<HTMLTextAreaElement, PromptInputProps>(
           className="absolute bottom-4 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#0F9E6A] hover:cursor-pointer"
           type="button"
           aria-label="Submit prompt"
+          title="Send"
         >
           <ArrowUpIcon className="text-[#171717]" size={25} />
         </button>
         <div className="absolute bottom-4 left-3 flex flex-row gap-1">
-          <button className="h-10 w-10 flex items-center justify-center rounded-lg border-[#474747] border bg-background hover:cursor-pointer">
+          <button
+            className="h-10 w-10 flex items-center justify-center rounded-lg border-[#474747] border bg-[#202020] hover:cursor-pointer"
+            type="button"
+            aria-label="Attach File"
+            title="Attach a file you want to have analyzed"
+          >
             <AttachFileIcon className="" size={25} />
           </button>
-          <button className="h-10 w-10 flex items-center justify-center rounded-lg border-[#474747] border bg-background hover:cursor-pointer">
+          <button
+            className="h-10 w-10 flex items-center justify-center rounded-lg border-[#474747] border bg-[#202020] hover:cursor-pointer"
+            type="button"
+            aria-label="Text to Speech"
+            title="Text to speech"
+          >
             <MicIcon className="" size={25} />
           </button>
         </div>
