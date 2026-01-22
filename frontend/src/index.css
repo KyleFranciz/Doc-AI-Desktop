@@ -78,11 +78,11 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  /* display: flex; */
   justify-content: center; /*Might change later on*/
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  /* place-items: center; */
+  /* min-width: 320px; */
+  /* min-height: 100vh; */
 }
 
 @layer utilities {

@@ -35,6 +35,9 @@ function createWindow() {
       preload: path.join(__dirname, "preload.mjs"),
     },
     titleBarStyle: "hidden",
+    titleBarOverlay: {
+      height: 60,
+    },
   });
 
   // Test active push message to Renderer-process.

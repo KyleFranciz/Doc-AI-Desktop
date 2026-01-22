@@ -20,8 +20,8 @@ function Home() {
     queryFn: () => getHeroData(),
   });
   return (
-    <div className="w-screen h-screen flex flex-col justify-center ">
-      <div className="flex flex-col items-center w-full text-[3vw] lg:text-[2.3vw] md:text-[3.5vw] sm:text-[3.3vw] gap-0 mb-9 ">
+    <div className="h-screen flex flex-col justify-center ">
+      <div className=" flex flex-col items-center w-full text-[3vw] lg:text-[2.3vw] md:text-[3.5vw] sm:text-[3.3vw] gap-0 mb-9 ">
         <h1 className="font-instrument-serif titles ">{data?.title}</h1>
         <h2 className="font-instrument-serif titles ">{data?.phrase}</h2>
       </div>
