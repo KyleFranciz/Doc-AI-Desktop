@@ -1,19 +1,54 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+from db.db import DB_PATH
 from routes.documents import router as document_router
 from routes.chats import router as chat_router
 from routes.health import router as health_router
 from routes.retrieve import router as retrieve_router
+from db.db import database_setup
 
 
-# Create the server
-app = FastAPI(title="Doc Backend API")
+# from uuid import uuid4 # NOTE: used to randomize for the ids for the tables
+
+import os
+from dotenv import load_dotenv
+
+# load in env variables
+load_dotenv()
+
+# import the env variable
+FRONTEND_URL = os.getenv("FRONTEND_URL")
+
+
+# function to make the tables for the database
+@asynccontextmanager  # decorator for using the yield for lifespan
+async def lifespan(app: FastAPI):
+    # on the server start
+    print("Initializing the database and making the tables")
+
+    # set up the initial tables
+    database_setup()
+
+    # sets the waiting point
+    yield
+
+    # runs when the FastAPI server closes
+    print("Server shutting down")
+
+
+# Create the server (database set up on initial launch)
+app = FastAPI(
+    title="Doc Backend API", lifespan=lifespan
+)  # lifespan runs before the server starts
+
 
 # Middleware
+# NOTE: EDIT WITH THE ENV FOR THE ROUTE SO ITS EASIER TO JK
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[FRONTEND_URL],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
