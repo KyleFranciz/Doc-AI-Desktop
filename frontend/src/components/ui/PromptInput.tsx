@@ -29,7 +29,7 @@ const PromptInput = React.forwardRef<HTMLTextAreaElement, PromptInputProps>(
     // onClick function to send the data to the backend with a mutation
 
     return (
-      <div className="relative w-full max-w-180.5 md:max-w-180 sm:max-w-150 xs:max-w-100">
+      <div className="relative w-md lg:w-180 md:w-150 sm:w-100 xs:max-w-120">
         <textarea
           ref={textareaRef}
           className={cn(

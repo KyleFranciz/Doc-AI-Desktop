@@ -9,9 +9,8 @@ from routes.health import router as health_router
 from routes.retrieve import router as retrieve_router
 from db.db import database_setup
 
-
 # from uuid import uuid4 # NOTE: used to randomize for the ids for the tables
-
+from models.doc import doc_response
 import os
 from dotenv import load_dotenv
 
@@ -30,6 +29,9 @@ async def lifespan(app: FastAPI):
 
     # set up the initial tables
     database_setup()
+
+    # test
+    # print(doc_response)
 
     # sets the waiting point
     yield
