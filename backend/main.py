@@ -2,7 +2,6 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from db.db import DB_PATH
 from routes.documents import router as document_router
 from routes.chats import router as chat_router
 from routes.health import router as health_router
@@ -10,7 +9,7 @@ from routes.retrieve import router as retrieve_router
 from db.db import database_setup
 
 # from uuid import uuid4 # NOTE: used to randomize for the ids for the tables
-from models.doc import doc_response
+# from models.doc import doc_response
 import os
 from dotenv import load_dotenv
 

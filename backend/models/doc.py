@@ -2,11 +2,12 @@
 
 # imports
 from langchain_ollama import ChatOllama
-from langchain.messages import SystemMessage, AIMessage, HumanMessage
+from langchain.messages import SystemMessage, HumanMessage
 
-# main agent
+# create doc agent
 doc_main = ChatOllama(model="qwen3:8b", temperature=0)
 
+# create the system message
 system_message = SystemMessage(
     """
     You are a friendly document summary agent, you are tasked with giving the user information related
@@ -19,7 +20,7 @@ system_message = SystemMessage(
 
 
 # function to get the users input and generate a response
-def get_answer_from_doc(question: str):
+def get_answer_from_doc(question: str, document_info: str):
     # might bring in the data from the vector database to help add context
 
     # get the users question
