@@ -26,7 +26,7 @@ Doc V2 is a hybrid desktop/web assistant that will let users upload documents, a
 
 - **Frontend stack:** Electron + Vite + React with TanStack Router and TanStack Query keeps navigation and data fetching type-safe making it easy to keep routes suggested and avoid using them incorrectly, while Tailwind/Tailwind Merge handles rapid, responsive styling for my UI.
 - **Backend stack:** FastAPI with a lifespan managed SQLite schema, modular routers (documents, chats, retrieve, health), and CORS locked to the renderer host lays a clean foundation for API so that I can ensure that my backend stays structured.
-- **RAG + AI:** LangChain with Ollama Chat/Embeddings plus a Chromadb-backed vector store preps Doc for secure retrieval, streaming context, and future agents that I plan on adding later on given some local models improvements lately.
+- **RAG + AI:** LangChain with Ollama Chat/Embeddings plus a Chromadb-backed vector store preps Doc for secure retrieval, streaming context, and future agents that I plan on adding later on given some local of the model improvements lately.
 - **Tooling:** ESLint/TypeScript strict mode enforce high quality, Electron Builder supports packaging, and Tailwind utilities keep the UI consistent.
 
 ## Architecture Overview
