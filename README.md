@@ -24,11 +24,11 @@ Doc AI is a hybrid desktop/web assistant that will let users upload documents, a
 
 ## Technical Choices
 
-- **Frontend stack:** Electron + Vite + React with TanStack Router and TanStack Query keeps navigation and data fetching type-safe making it easy to keep routes suggested and avoid using them incorrectly, while Tailwind/Tailwind Merge handles rapid, responsive styling for my UI.
+- **Frontend stack:** Electron + Vite + React with TanStack Router and TanStack Query helps me to keeps the navigation and data fetching type-safe making it easier when developing, plus the type suggestions for the routing is helpful, it helps for anyone that I decide to colab with to avoid using routes incorrectly, while Tailwind helps easy to easily set up for responsive styling for my UI, and making css development quicker.
 
-- **Backend stack:** FastAPI with a lifespan managed SQLite schema, modular routers (documents, chats, retrieve, health), and CORS locked to the renderer host lays a clean foundation for API so that I can ensure that my backend stays structured.
+- **Backend stack:** FastAPI with a lifespan managed SQLite schema since I wanted to keep the data source only on harware for security. SQLite was more than enough, modular routers (documents, chats, retrieve, health) to help keep routes organized to avoid sifting through a file, and CORS locked to the renderer host lays a clean foundation for API so that I can ensure that my backend stays structured I may plan to access outside services later but maintain data locally.
 
-- **RAG + AI:** LangChain with Ollama Chat/Embeddings plus a Chromadb backed vector store preps Doc for secure retrieval, streaming context, and future agents that I plan on adding later on given some local of the model improvements lately.
+- **RAG + AI:** LangChain with Ollama Chat to build my front facing agent and handle embeddings plus a Chromadb backed vector store preps Doc for secure and fast retrieval, streaming context. I do plan on adding future agents given some local of the model improvements lately. 
 
 - **Tooling:** ESLint/TypeScript strict mode enforce high quality, Electron Builder supports packaging, and Tailwind utilities keep the UI consistent.
 
