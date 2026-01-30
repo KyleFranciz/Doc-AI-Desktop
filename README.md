@@ -1,4 +1,4 @@
-# Doc V2
+# DocAI
 
 ![Status](https://img.shields.io/badge/status-active--development-blue)
 ![Lint](https://img.shields.io/badge/lint-eslint%20%2B%20ts-black)
