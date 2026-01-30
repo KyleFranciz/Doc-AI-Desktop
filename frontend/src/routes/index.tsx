@@ -14,7 +14,7 @@ export interface HomePageI {
 }
 
 function Home() {
-  // function gets the dummy data
+  // function is set up to get dummy data for now (planning to keep title and phrase local and return based on time)
   const { data, error } = useQuery<HomePageI>({
     queryKey: ["homePageData"],
     queryFn: () => getHeroData(),
@@ -25,8 +25,8 @@ function Home() {
         <h1 className="font-instrument-serif titles ">{data?.title}</h1>
         <h2 className="font-instrument-serif titles ">{data?.phrase}</h2>
       </div>
-      <div className="mt-6 flex w-full justify-center">
-        <PromptInput placeholder="Type your prompt..." />
+      <div className="mt-7 flex w-full justify-center">
+        <PromptInput placeholder="What do you need help with?" />
       </div>
     </div>
   );

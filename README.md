@@ -3,6 +3,8 @@
 ![Status](https://img.shields.io/badge/status-active--development-blue)
 ![Lint](https://img.shields.io/badge/lint-eslint%20%2B%20ts-black)
 
+![Doc Demo](./Images/doc_screenshot.png)
+
 > DocAI is a local desktop document intelligence application that I wanted to make that pairs an Electron + React renderer with a FastAPI + LangChain/Ollama backend.
 
 ## Table of Contents

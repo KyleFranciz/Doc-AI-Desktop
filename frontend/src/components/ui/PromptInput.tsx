@@ -5,6 +5,7 @@ import { cn } from "../../lib/utils";
 import { AttachFileIcon } from "./shadcn/attach-file";
 import { MicIcon } from "./shadcn/mic";
 
+// make sure that the same params are accessible with input props
 export interface PromptInputProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
 // TODO: ADD IN SHADCN TOOLTIP
