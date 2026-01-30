@@ -20,7 +20,7 @@
 
 ## Summary
 
-Doc V2 is a hybrid desktop/web assistant that will let users upload documents, ask AI-guided questions, and manage chats using a vector retrieval pipeline. While the product is still under construction, every commit showcases the decisions I've made around tooling, modular architecture, and how the stack that I chose will perform after packaging everything.
+DocAI is a hybrid desktop/web assistant that will let users upload documents, ask AI-guided questions, and manage chats using a vector retrieval pipeline. While the product is still under construction, every commit showcases the decisions I've made around tooling, modular architecture, and how the stack that I chose will perform after packaging everything.
 
 ## Technical Choices
 
