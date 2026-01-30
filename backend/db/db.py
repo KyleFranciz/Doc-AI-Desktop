@@ -12,7 +12,7 @@ load_dotenv()
 DB_PATH = os.getenv("DB_PATH")
 
 
-# helper function that establishes a connection and helps with queries
+# helper function that establishes a connection and helps with queries other functions
 def use_database():
     # create connection
     connection = sqlite3.connect(DB_PATH)
@@ -26,7 +26,7 @@ def use_database():
         connection.close()
 
 
-# function to create the basic structure of the db
+# function to create initial structure for the database
 def database_setup():
     # handles the closing of the db after the action is done
     with sqlite3.connect(DB_PATH) as connection:
@@ -59,10 +59,11 @@ def database_setup():
         connection.commit()
 
 
-# funtion to make addition to the database
+# funtion to make addition to the database (will be used with DocumentProcessor)
 def make_exection(query, parameters):
     pass
 
 
+# function to make a query to the database if needed (Chroma will handle retrieval this will handle chats)
 def make_query(query, parameters):
     pass

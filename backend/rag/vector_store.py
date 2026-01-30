@@ -9,6 +9,8 @@ from platformdirs import user_data_dir
 from dotenv import load_dotenv
 import os
 
+# from pathlib import Path # use to help with finding the source path
+
 # NOTE: MIGHT CREATE COLLECTIONS PER PROJECT IF I ADD IN A PROJECT FEATURE FOR PERSISTENCE PER PROJECTS
 
 # load env variable
@@ -42,7 +44,16 @@ class ChromaDocumentVectorStore:
         self.collection = self.client.get_or_create_collection(collection_name)
 
     def get_collection_name(self, doc_type: str, source: str):
+        # file type
+        file_types = {".pdf, .txt, .md"}
+        # seperate an text and get the file type
+        type_of_doc = doc_type.lower().split()
+
+        # check to see if the file type is doc_type
+        if {} in type_of_doc:
+            pass
         # filter the data by metadata
+
         pass
 
     # function to store data in chroma
