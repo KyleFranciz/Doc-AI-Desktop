@@ -36,6 +36,8 @@ Doc V2 is a hybrid desktop/web assistant that will let users upload documents, a
 
 ## Development Setup (If you want to make your own version or collaborate)
 
+#### (I'm adding YAML file soon to help make running things easier for others)
+
 1. Clone the repo and install frontend dependencies:
 
    ```bash
