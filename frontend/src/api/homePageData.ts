@@ -1,6 +1,3 @@
-import { HomePageI } from "@/routes";
-import axios from "axios";
-
 // dummy data
 const titleAndPhrasing = {
   title: "Welcome Kyle,",

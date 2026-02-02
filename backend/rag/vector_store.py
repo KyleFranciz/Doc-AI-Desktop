@@ -2,6 +2,7 @@
 
 # imports
 # NOTE: PersistentClient is for me to be able to keep the vector data running on the application when its running
+from pathlib import Path
 from typing import Dict, List
 from chromadb import Collection, chromadb
 from chromadb.api.client import Client
@@ -23,8 +24,34 @@ APP_AUTHOR = os.getenv("APP_AUTHOR")
 data_path = user_data_dir(appname=APP_NAME, appauthor=APP_AUTHOR)
 chroma_path_for_storage = f"{data_path}/chroma_data"
 
-# defaults
-default_collection_name = "doc_context_collection"
+
+# helper function for getting the collection name needed
+def get_collection_name(doc_type: str, source: str):
+    # get doc_type
+    doc_type = doc_type.lower().split()
+
+    # get the source path needed
+    source_path = Path(source)
+
+    # check for coding file types
+    if doc_type in {"py", "js", "ts", "java", "go", "rs"}:
+        # package for specific code type
+        return f"code_{doc_type}"
+
+    # handle text files
+    if doc_type in {"txt", "md"}:
+        # return data as a project file
+        parts = source_path.parts
+        project_name = parts[0] if parts else "general"
+        return f"docs_{project_name}"
+
+    # handle large documents
+    if doc_type in {"pdf", "docx"}:
+        # return the document name
+        return f"document_{doc_type}"
+
+    # otherwise
+    return "general_document"
 
 
 # Chroma Class
@@ -38,28 +65,21 @@ class ChromaDocumentVectorStore:
     def get_or_make_collection(
         # only using one big collection to store every thing for global connection
         self,
-        collection_name: str = default_collection_name,
-    ):  # defaults to this
-        # creates or gets collection if exists, useful for app start
+        collection_name: str = None,
+        doc_type: str = None,
+        source: str = None,
+    ):
+        # handle if there is no collection name
+        if collection_name is None:
+            collection_name = get_collection_name(doc_type, source)
+
+        # set the collection name
         self.collection = self.client.get_or_create_collection(collection_name)
-
-    def get_collection_name(self, doc_type: str, source: str):
-        # file type
-        file_types = {".pdf, .txt, .md"}
-        # seperate an text and get the file type
-        type_of_doc = doc_type.lower().split()
-
-        # check to see if the file type is doc_type
-        if {} in type_of_doc:
-            pass
-        # filter the data by metadata
-
-        pass
 
     # function to store data in chroma
     def store_embedding_in_collection(
         self,
-        collection_name: str = default_collection_name,  # name for the collection
+        collection_name: str = None,  # name for the collection
         document_id: str = None,  # ids for the documents
         document_embeddings: List[
             List[float]
@@ -89,7 +109,7 @@ class ChromaDocumentVectorStore:
     # function to search for similar result for the question in the database
     def search_for_in_store(
         self,
-        collection_name: str = default_collection_name,  # name for the collection
+        collection_name: str = None,  # name for the collection
         query_embedding: List[float] = None,  # question that was embedded
         n_results: int = 10,  # returns this amount of results
     ):

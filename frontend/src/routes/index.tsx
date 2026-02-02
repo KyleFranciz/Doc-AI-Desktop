@@ -1,24 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
-import axios from "axios";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getHeroData } from "../api/homePageData.ts";
 import { PromptInput } from "../components/ui/PromptInput";
 
 export const Route = createFileRoute("/")({
-  component: Home,
+  component: HomePage,
 });
 
+// interface for title and phrase
 export interface HomePageI {
   title: string;
   phrase: string;
 }
 
-function Home() {
+// Homepage
+function HomePage() {
   // function is set up to get dummy data for now (planning to keep title and phrase local and return based on time)
   const { data, error } = useQuery<HomePageI>({
     queryKey: ["homePageData"],
     queryFn: () => getHeroData(),
   });
+
+  // handle error in getting the data
   return (
     <div className="h-screen flex flex-col justify-center ">
       <div className=" flex flex-col items-center w-full text-2xl xl:text-[2.8vw] lg:text-[3.1vw] md:text-[3.8vw] sm:text-[3.5vw] xs:text-[4.5vw] gap-0 mb-9 ">

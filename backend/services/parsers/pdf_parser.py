@@ -1,7 +1,7 @@
 # file handles document parsing
 from pypdf import PdfReader
 
-# create instance
+# create instance for pdf reader
 reader = PdfReader()
 
 

@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from routes.documents import router as document_router
@@ -20,7 +20,7 @@ load_dotenv()
 FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 
-# function to make the tables for the database
+# function to make the tables for the database on start up
 @asynccontextmanager  # decorator for using the yield for lifespan
 async def lifespan(app: FastAPI):
     # on the server start
@@ -41,7 +41,7 @@ async def lifespan(app: FastAPI):
 
 # Create the server (database set up on initial launch)
 app = FastAPI(
-    title="Doc Backend API", lifespan=lifespan
+    title="Doc AI's Backend API", lifespan=lifespan
 )  # lifespan runs before the server starts
 
 
