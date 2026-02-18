@@ -16,11 +16,21 @@ class DocumentProcessor:
         self, doc_id: str, source_path: str, doc_type: str, content: str, chunk_idx: int
     ) -> Dict:
         """Generates metadata for each chunk to make ready for packaging in Vector Store"""
-        pass
+        # build the metadata to be passed into the vectorStore
+        return {
+            "doc_id": doc_id,
+            "source_path": source_path,
+            "doc_type": doc_type,
+            "content": content,
+            "chunk_idx": chunk_idx,
+            "chunk_length": len(content),
+        }
 
     # function to get the data based on file type, use different parsing methods
     def choose_collection_strategy(self, doc_metadata: Dict) -> str:
         """Chooses where to send the file data to based on file type from metadata"""
+        if doc_metadata["doc_type"] == "":
+            pass
         pass
 
     # function to handle the process of making the new document (adding to db and vector database)
