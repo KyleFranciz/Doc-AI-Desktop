@@ -27,6 +27,7 @@ chroma_path_for_storage = f"{data_path}/chroma_data"
 
 # helper function for getting the collection name needed
 def get_collection_name(doc_type: str, source: str):
+    """gets the doc_type and source and creates the names to pass to the vector database"""
     # get doc_type
     doc_type = doc_type.lower().split()
 
@@ -54,7 +55,7 @@ def get_collection_name(doc_type: str, source: str):
     return "general_document"
 
 
-# Chroma Class
+# Class to help with the working with ChromaDB 
 class ChromaDocumentVectorStore:
     # this function creates the chromadb client in the disk
     def __init__(self, path: str = chroma_path_for_storage) -> None:
@@ -63,12 +64,13 @@ class ChromaDocumentVectorStore:
 
     # this handles the creation or getting data from chroma collection in the db
     def get_or_make_collection(
-        # only using one big collection to store every thing for global connection
         self,
         collection_name: str = None,
         doc_type: str = None,
         source: str = None,
     ):
+        """makes or get the collection for the vector database if needed"""
+        
         # handle if there is no collection name
         if collection_name is None:
             collection_name = get_collection_name(doc_type, source)
@@ -79,17 +81,19 @@ class ChromaDocumentVectorStore:
     # function to store data in chroma
     def store_embedding_in_collection(
         self,
-        collection_name: str = None,  # name for the collection
-        document_id: str = None,  # ids for the documents
+        collection_name: str,  # name for the collection
+        document_id: str,  # ids for the documents
         document_embeddings: List[
             List[float]
-        ] = None,  # all the embeddings from I created from the chunks from the document
-        text: List[str] = None,  # text that coralates with the vectors
+        ],  # all the embeddings from I created from the chunks from the document
+        text: List[str],  # text that coralates with the vectors
         rich_metadata: List[
             Dict
-        ] = None,  # meta data to help with storing additional data
+        ],  # meta data to help with storing additional data
     ):
-        # check if there is a collection already
+        """function to store embedding in chroma"""
+        
+        # TODO: check if there is a collection already (look over logic)
         if self.collection is None:
             self.collection = ChromaDocumentVectorStore.get_or_make_collection(
                 collection_name
@@ -128,6 +132,7 @@ class ChromaDocumentVectorStore:
 
     # function to delete the document data
     def delete_document_completely(self, document_id: str):
+        """deletes the document from vectorstore"""
         self.collection.delete(ids=document_id)
 
     # function to replace the embeddings in the document

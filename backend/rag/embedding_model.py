@@ -16,8 +16,9 @@ def embed_document(texts: List[str]) -> List[List[float]]:
     return document_embedding
 
 
-# function to batch the document into seperate chunks to make it easier for the document to be used
+# NOTE: MIGHT NEED TO LOOK BACK AT THIS AGAIN
 def batch_embed_documents(texts: List[str], batch_size: int = 100):
+    """this batches the text in the document into seperate chunks to make it easier for the document to be used (100 words at a time)"""
     # create a dictionary to return the all the batches
     all_batches = []
 
