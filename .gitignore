@@ -12,7 +12,7 @@ release/
 build/
 
 # Python / backend
-backend/firstvenv/
+backend/venv/
 __pycache__/
 *.pyc
 
