@@ -5,7 +5,7 @@
 
 ![Doc Demo](./Images/doc_screenshot.png)
 
-> Doc AI is a local desktop document intelligence application that I wanted to make that pairs an Electron + React renderer with a FastAPI + LangChain/Ollama backend.
+> Doc AI is a local desktop document intelligence application that I wanted to make that helps access information from my personal notes or lectures to quicktly get the information I need.
 
 ## Table of Contents
 
