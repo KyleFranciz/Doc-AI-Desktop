@@ -120,4 +120,3 @@ class DocumentProcessor:
         # process the new data that we pulled before the delete
         self.process_new_document(doc_id, content, metadata)
 
-    pass

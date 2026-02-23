@@ -1,13 +1,15 @@
-from typing import Any
+from typing import Any # will make this more specific later on
 
+# for file uploads
 from fastapi import APIRouter, File, UploadFile
 
-from pathlib import Path
+# gets the file paths from the apps folder, makes them objects 
+from pathlib import Path # can manipulate folders
 
-from rag.documentprocessor import DocumentProcessor
-from rag.vector_store import ChromaDocumentVectorStore
-from routes.placeholders import placeholder_response
-from services.file_validator import FileValidator
+from rag.documentprocessor import DocumentProcessor # Processes the document (adds to the database and vector_store)
+from rag.vector_store import ChromaDocumentVectorStore # controls vector_store
+from routes.placeholders import placeholder_response # filler responses to send back
+from services.file_validator import FileValidator # validates the files that are sent to the route to make sure they are good to add
 
 # get the router access to make changes
 router = APIRouter(prefix="/documents", tags=["documents"])
@@ -18,16 +20,26 @@ DOCUMENT_DIR = Path("documents")
 DOCUMENT_DIR.mkdir(exist_ok=True)
 
 
-# route for single file document
+# processes a single document
 @router.post("/single")
 async def post_document(file: UploadFile = File(...)):
     """Handles single document being uploaded"""
+    # initialize
     validator = FileValidator()
-    # validate the file
+    
+    # check if file is valid  (function handles if the file type not valid or too large)
     await validator.validate_file(file)
-    #
+
+    # process and extract the text from the file
+
+    # initialize after it validates and size is good
     processor = DocumentProcessor(vectorStore=ChromaDocumentVectorStore())
-    result = await processor.process_new_document(file)
+
+    # read the uploaded file data
+
+
+    # process the file
+    result = await processor.process_new_document()
 
     # return message on success to test route
     return {"status": "ok", "doc_id": result.doc_id}  # result.id

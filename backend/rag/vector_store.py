@@ -2,6 +2,7 @@
 
 # imports
 # NOTE: PersistentClient is for me to be able to keep the vector data running on the application when its running
+from logging import error
 from pathlib import Path
 from typing import Dict, List
 from chromadb import Collection, chromadb
@@ -9,8 +10,7 @@ from chromadb.api.client import Client
 from platformdirs import user_data_dir
 from dotenv import load_dotenv
 import os
-
-# from pathlib import Path # use to help with finding the source path
+from pathlib import Path # use to help with finding the source path
 
 # NOTE: MIGHT CREATE COLLECTIONS PER PROJECT IF I ADD IN A PROJECT FEATURE FOR PERSISTENCE PER PROJECTS
 
@@ -21,8 +21,8 @@ APP_NAME = os.getenv("APP_NAME")
 APP_AUTHOR = os.getenv("APP_AUTHOR")
 
 # data directory for prod as well as dev
-data_path = user_data_dir(appname=APP_NAME, appauthor=APP_AUTHOR)
-chroma_path_for_storage = f"{data_path}/chroma_data"
+data_path = user_data_dir(appname=APP_NAME, appauthor=APP_AUTHOR) # make user data directory
+chroma_path_for_storage = f"{data_path}/chroma_data" # storage path to use with chroma
 
 
 # helper function for getting the collection name needed
@@ -75,10 +75,14 @@ class ChromaDocumentVectorStore:
         if collection_name is None:
             collection_name = get_collection_name(doc_type, source)
 
-        # set the collection name
+        # get or create the collection
         self.collection = self.client.get_or_create_collection(collection_name)
+        
+        # return the collection
+        return self.collection
 
     # function to store data in chroma
+    # NOTE: might use try except
     def store_embedding_in_collection(
         self,
         collection_name: str,  # name for the collection
@@ -93,12 +97,11 @@ class ChromaDocumentVectorStore:
     ):
         """function to store embedding in chroma"""
         
-        # TODO: check if there is a collection already (look over logic)
+        # check if the collection exists
         if self.collection is None:
-            self.collection = ChromaDocumentVectorStore.get_or_make_collection(
-                collection_name
-            )
-
+            # get or make the collection if doesn't exist (sets collection)
+            self.get_or_make_collection(collection_name)
+            
         # add the items to the collection
         # NOTE: Remove print results after I test that it works
         results = self.collection.add(
@@ -107,6 +110,7 @@ class ChromaDocumentVectorStore:
             documents=text,  # text info for cross reference to be able to show a result
             metadatas=rich_metadata,  # help with the filtering
         )
+        
         # print the result (might not be able to)
         print(results)
 
@@ -114,14 +118,22 @@ class ChromaDocumentVectorStore:
     def search_for_in_store(
         self,
         collection_name: str = None,  # name for the collection
-        query_embedding: List[float] = None,  # question that was embedded
+        query_embeddings: List[List[float]] = None,  # question that was embedded
         n_results: int = 10,  # returns this amount of results
     ):
-        pass
+        try:
+            # set the collection if it doesn't exist
+            self.get_or_make_collection(collection_name)
 
-    # function to search across all the collections if needed
+            # check if collection exists
+            return self.collection.query(query_embeddings=query_embeddings, n_results=n_results) # returns a QueryResult object
+
+        except error as err:
+            return err 
+
+    # general search function to search across all the collections if needed
     def search_across_all_collections(
-        self, query_embedding: List[float] = None, collections: List[str] = None
+        self, query_embedding: List[List[float]] = None, collections: List[str] = None
     ):
         """
         query_embedding is the question that was embedded from the user
@@ -131,17 +143,28 @@ class ChromaDocumentVectorStore:
         pass
 
     # function to delete the document data
-    def delete_document_completely(self, document_id: str):
+    def delete_document_completely(self, collection_name:str, document_id: List[str]):
         """deletes the document from vectorstore"""
+        # set the collection
+        self.get_or_make_collection(collection_name)
+        
+        # delete the ids from the collection that is found
         self.collection.delete(ids=document_id)
 
+    # TODO: CHECK TO SEE IF NEED TO SEE IF THE DOCUMENTS IS NEEDED
     # function to replace the embeddings in the document
     def replace_document_embedding(
         self,
+        collection_name: str,
         document_id: str,  # document id that houses all info for one document
         new_embeddings: List[
             List[float]
         ],  # new embeddings to replace for the document to update the info
         new_metatadata: List[Dict],  # new metadata for filtering
     ):
-        pass
+        # get the collection from the store
+        self.get_or_make_collection(collection_name)
+
+        # NOTE: MIGHT UPSERT INSTEAD
+        # update the data with the new data
+        self.collection.update(ids=document_id, embeddings=new_embeddings, metadatas=new_metatadata)
