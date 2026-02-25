@@ -16,7 +16,7 @@ class DocumentProcessor:
         # gets instanciated on creation
         self.vectorStore = ChromaDocumentVectorStore()
 
-    # function to generate metadata for additional context
+    # helper function to format metadata for additional context
     def generate_metadata(
         self, doc_id: str, source_path: str, doc_type: str, content: str, chunk_idx: int
     ) -> Dict:
