@@ -1,5 +1,6 @@
 # This file controls adding document data into the vector database and regular SQLite Database
-# Document Processor Class (Orchastration Layter that controls the db and vector embedding processes)
+"""Document Processor Class (Orchastration Layter that controls the db and vector embedding processes)"""
+
 from datetime import date
 import datetime
 from typing import Dict, List
@@ -14,7 +15,7 @@ class DocumentProcessor:
     # core essentials
     def __init__(self, vectorStore: ChromaDocumentVectorStore) -> None:
         # gets instanciated on creation
-        self.vectorStore = ChromaDocumentVectorStore()
+        self.vectorStore = vectorStore
 
     # helper function to format metadata for additional context
     def generate_metadata(
@@ -36,7 +37,7 @@ class DocumentProcessor:
         """Chooses where to send the file data to based on file type from metadata"""
         return get_collection_name(doc_metadata["doc_type"], doc_metadata["source_path"])
 
-    # function to handle the process of making the new document (adding to db and vector database)
+    # function handles adding doc to vectorStore and database
     def process_new_document(
         self,
         doc_id: str,
@@ -44,10 +45,11 @@ class DocumentProcessor:
         metadata: List[Dict],
     ):
         """Ingests new document data into where it needs to go database and vector store"""
+        
         # get the collection name
         collection_name = self.choose_collection_strategy(metadata)
 
-        # create the chunkID per chunk
+        # create the chunkID per chunk to help with retrieval
         chunk_ids = [f"{doc_id}:{idx}:{uuid4().hex}" for idx in range(len(content))]
 
         # make chunk metadata to pass into vectorDB
@@ -70,30 +72,37 @@ class DocumentProcessor:
         # store the embeddin in the vector collection
         self.vectorStore.store_embedding_in_collection( collection_name=collection_name, document_id=chunk_ids, document_embeddings=embeddings, text=content, rich_metadata=chunk_metadata)
 
-        # make sure I know what year and time this was stored
-        now = datetime.datetime.utcnow().isoformat()
+        # structure the time and date to be added into the database
+        now = datetime.datetime.now(datetime.timezone.utc).isoformat()
 
-        # add embedding data into documents
+        # add embedding data into documents table in database
         db_utils.make_exection("INSERT INTO documents (id, title, source_path, content_hash, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?)",[metadata["title"], metadata["source_path"], metadata["content_hash"], now, now])
 
-        # add chunk data into the database
+        # add chunk data into the chunks table in database
         for idx, text in enumerate(content):
             db_utils.make_exection("INSERT INTO chunks (id, document_id, chunk_index, text) VALUES (?, ?, ?, ?)", [chunk_ids[idx], doc_id, idx, text])
         
         
 
+    # handles updates from vectorStore and database
     def update_document(self, doc_id:str, new_content:List[str], new_metadata: Dict):
         """Updates the document if user adds new data and resubmits the same file"""
+        # delete the old doc
         self.delete_document(doc_id)
+        # process new doc in it's place
         self.process_new_document(doc_id, new_content, new_metadata)
+
         pass
 
+    # handes document clean up in the vectorStore and database
     def delete_document(self, doc_id:str):
         """Deletes the document from the vector store and the database if needed"""
         # delete the document from chroma
         self.vectorStore.delete_document_completely(doc_id)
         # delete from the database
         db_utils.make_exection("DELETE FROM documents WHERE id = ?", [doc_id])
+        
+        pass
 
     def reprocess_with_new_model(self, doc_id:str):
         """Reprocesses the file with a different model if needed"""

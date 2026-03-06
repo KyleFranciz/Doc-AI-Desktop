@@ -28,11 +28,14 @@ chroma_path_for_storage = f"{data_path}/chroma_data" # storage path to use with 
 # helper function for getting the collection name needed
 def get_collection_name(doc_type: str, source: str):
     """gets the doc_type and source and creates the names to pass to the vector database"""
-    # get doc_type
-    doc_type = doc_type.lower().split()
+    
+    # get doc_type by sanatizing the file type
+    doc_type = doc_type.lower().strip()
 
     # get the source path needed
     source_path = Path(source)
+
+    # check each of the different file types
 
     # check for coding file types
     if doc_type in {"py", "js", "ts", "java", "go", "rs"}:
@@ -51,7 +54,7 @@ def get_collection_name(doc_type: str, source: str):
         # return the document name
         return f"document_{doc_type}"
 
-    # otherwise
+    # otherwise if other cases dont hit
     return "general_document"
 
 
