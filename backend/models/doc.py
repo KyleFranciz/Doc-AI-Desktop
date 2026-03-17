@@ -8,7 +8,7 @@ from langchain.messages import SystemMessage, HumanMessage
 doc_main = ChatOllama(model="qwen3:8b", temperature=0)
 
 # create the system message
-system_message = SystemMessage(
+system_prompt = SystemMessage(
     """
     You are a friendly document summary agent, you are tasked with giving the user information related
     to the document/documents assigned as well as answering only questions pertainaing to the document to the
@@ -26,6 +26,8 @@ def get_answer_from_doc(question: str, document_info: str):
     # get the users question
     user_message = HumanMessage(question)
 
-    messages = [system_message, user_message]
+    messages = [system_prompt, user_message]
     # return the answer to from doc
     return doc_main.invoke(messages)
+
+
