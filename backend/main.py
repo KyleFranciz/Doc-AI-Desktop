@@ -20,7 +20,7 @@ load_dotenv()
 FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 
-# function to make the tables for the database on start up
+# function to handle the tables for the database on start up
 @asynccontextmanager  # decorator for using the yield for lifespan
 async def lifespan(app: FastAPI):
     # on the server start

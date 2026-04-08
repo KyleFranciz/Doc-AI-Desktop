@@ -1,3 +1,4 @@
+// NOTE: Set up an array of different titles and phrasing to randomize
 // dummy data
 const titleAndPhrasing = {
   title: "Welcome Kyle,",
